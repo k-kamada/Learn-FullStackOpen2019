@@ -4,9 +4,10 @@ import ReactDOM from 'react-dom';
 const Statistic = ({text ,value}) => {
   const terminalChar = (text === 'positive') ? '%' : '';
   return (
-    <>
-      {text} {value} {terminalChar} <br />
-    </>
+    <tr>
+      <td> {text} </td>
+      <td> {value} {terminalChar} </td>
+    </tr>
   );
 };
 
@@ -14,14 +15,16 @@ const Statistics = ({ feedbacks }) => {
   if (feedbacks.all === 0)
     return (<p>No feedback given</p>);
   return (
-    <>
-      <Statistic text='good' value={feedbacks.good} />
-      <Statistic text='neutral' value={feedbacks.neutral} />
-      <Statistic text='bad' value={feedbacks.bad} />
-      <Statistic text='all' value={feedbacks.all} />
-      <Statistic text='average' value={feedbacks.average} />
-      <Statistic text='positive' value={feedbacks.positive} />
-    </>
+    <table>
+      <tbody>
+        <Statistic text='good' value={feedbacks.good} />
+        <Statistic text='neutral' value={feedbacks.neutral} />
+        <Statistic text='bad' value={feedbacks.bad} />
+        <Statistic text='all' value={feedbacks.all} />
+        <Statistic text='average' value={feedbacks.average} />
+        <Statistic text='positive' value={feedbacks.positive} />
+      </tbody>
+    </table>
   );
 };
 
@@ -53,16 +56,14 @@ const App = () => {
       <Button onClick={handleClick(setNeutral, neutral)} text='neutral' />
       <Button onClick={handleClick(setBad, bad)} text='bad' />
       <h1>statistics</h1>
-      <p>
-        <Statistics feedbacks={{
-          good: good,
-          bad: bad,
-          neutral: neutral,
-          all: all,
-          average: average,
-          positive: (good / all * 100),
-        }} />
-      </p>
+      <Statistics feedbacks={{
+        good: good,
+        bad: bad,
+        neutral: neutral,
+        all: all,
+        average: average,
+        positive: (good / all * 100),
+      }} />
     </div>
   );
 };
