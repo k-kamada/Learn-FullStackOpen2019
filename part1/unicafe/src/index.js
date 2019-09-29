@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
-const Statistics = ({ text, value }) => {
-  const terminalChar = (text === 'positive') ? '%' : '';
+const Statistics = ({ feedbacks }) => {
+  if (feedbacks.all === 0)
+    return (<p>No feedback given</p>);
   return (
     <>
-      {text} {value} {terminalChar} <br />
+      good {feedbacks.good} <br />
+      neutral {feedbacks.neutral} <br />
+      bad {feedbacks.bad} <br />
+      all {feedbacks.all} <br />
+      average {feedbacks.average} <br />
+      positive {feedbacks.positive} %<br />
     </>
   );
 };
@@ -26,12 +32,14 @@ const App = () => {
       <button onClick={()=>{setBad(bad+1); setAll(all+1)}}>bad</button>
       <h1>statistics</h1>
       <p>
-        <Statistics text='good' value={good} />
-        <Statistics text='neutral' value={neutral} />
-        <Statistics text='bad' value={bad} />
-        <Statistics text='all' value={all} />
-        <Statistics text='average' value={average} />
-        <Statistics text='positive' value={good / all * 100} />
+        <Statistics feedbacks={{
+          good: good,
+          bad: bad,
+          neutral: neutral,
+          all: all,
+          average: average,
+          positive: (good / all * 100),
+        }} />
       </p>
     </div>
   );
