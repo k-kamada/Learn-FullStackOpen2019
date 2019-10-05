@@ -9,7 +9,7 @@ const Header = (props) => {
 
 const Part = ({ name, exercises }) => {
   return (
-    <li>{name} {exercises}</li>
+    <p>{name} {exercises}</p>
   );
 }
 
@@ -23,9 +23,9 @@ const Content = (props) => {
   );
 
   return (
-    <ul>
+    <>
       {parts()}
-    </ul>
+    </>
   );
 }
 
