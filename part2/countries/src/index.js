@@ -40,7 +40,7 @@ const Country = ({ name }) => {
   );
 };
 
-const Results = ({ names, filterWord }) => {
+const Results = ({ names, filterWord, setFilterWord }) => {
   if (filterWord === '') {
     return (
       <>Please input the country name</>
@@ -59,7 +59,15 @@ const Results = ({ names, filterWord }) => {
     );
   }
   // 2 ~ 10 candidates found
-  const lists = names.map(name => <div key={name}>{name}<br /></div>);
+  const lists = names.map(name => 
+    <div key={name}>
+      {name}
+      <button onClick={() => setFilterWord(name)}>
+        show
+      </button>
+      <br />
+    </div>
+  );
   return (lists);
 };
 
@@ -72,7 +80,7 @@ const App = () => {
     if (countries.length === 0) {
       axios
         .get('https://restcountries.eu/rest/v2/all')
-        .then(response => {setCountries(response.data)});
+        .then(response => {setCountries(response.data); console.log('get')});
     }
   }, [countries]);
 
@@ -90,7 +98,7 @@ const App = () => {
         find countries
         <input value={filterWord} onChange={onFilterWordChange}></input>
       </p>
-      <Results filterWord={filterWord} names={filterdCountry} />
+      <Results filterWord={filterWord} setFilterWord={setFilterWord} names={filterdCountry} />
     </>
   );
 };
