@@ -3,8 +3,11 @@ import ReactDOM from 'react-dom';
 
 import axios from 'axios';
 
+import access_key from './APIkeys';
+
 const Country = ({ name }) => {
   const [countryInfo, setCountryInfo] = useState({});
+  const [currentWeather, setCurrentWeather] = useState({});
 
   useEffect(() => {
     axios
@@ -18,6 +21,21 @@ const Country = ({ name }) => {
           population: fetched.population,
           languages: languages,
           flag: fetched.flag,
+        });
+      });
+
+    // access_key is import from other source (not uploaded to GitHub)
+    const queryURL = 'http://api.weatherstack.com/current?access_key=' + access_key + '&query=' + name;
+
+    axios
+      .get(queryURL)
+      .then(response => {
+        const fetched = response.data.current;
+        setCurrentWeather({
+          temperature: fetched.temperature,
+          icon: fetched.weather_icons[0],
+          windSpeed: fetched.wind_speed,
+          windDir: fetched.wind_dir,
         });
       });
   }, [name]);
@@ -36,6 +54,10 @@ const Country = ({ name }) => {
       <p>
         <img src={countryInfo.flag} width="300" alt="national flag"></img>
       </p>
+      <h4>Weather in {countryInfo.name}</h4>
+      <img src={currentWeather.icon} width="100" alt="weather icon"></img><br />
+      <b>temperature:</b> {currentWeather.temperature}<br />
+      <b>wind:</b> {currentWeather.windSpeed} kph direction {currentWeather.windDir}<br />
     </>
   );
 };
@@ -80,7 +102,7 @@ const App = () => {
     if (countries.length === 0) {
       axios
         .get('https://restcountries.eu/rest/v2/all')
-        .then(response => {setCountries(response.data); console.log('get')});
+        .then(response => {setCountries(response.data)});
     }
   }, [countries]);
 
