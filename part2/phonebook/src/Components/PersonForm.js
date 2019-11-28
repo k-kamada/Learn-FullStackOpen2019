@@ -1,4 +1,5 @@
 import React from 'react';
+import PersonService from './../services/persons';
 
 const PersonForm = (props) => {
   const handleNameChange = (event) => {
@@ -15,7 +16,11 @@ const PersonForm = (props) => {
       alert(`${props.newName} is already added to phonebook`);
       return;
     }
-    props.setPersons(props.persons.concat({name: props.newName, number: props.newNumber}));
+    PersonService.create({name: props.newName, number:props.newNumber})
+      .then(returnedPerson => {
+        //props.setPersons(props.persons.concat({name: props.newName, number: props.newNumber}));
+        props.setPersons(props.persons.concat(returnedPerson));
+      });
   };
 
   return (
