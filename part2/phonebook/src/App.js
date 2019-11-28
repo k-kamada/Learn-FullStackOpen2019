@@ -36,7 +36,12 @@ const App = () => {
 
       <h3>Numbers</h3>
       
-      <Persons persons={persons} filterWord={filterWord}/>
+      <Persons 
+        persons={persons} 
+        filterWord={filterWord} 
+        deletePerson={PersonService.deletePerson}
+        setPersons={setPersons}
+      />
 
     </div>
   );

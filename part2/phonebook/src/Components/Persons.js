@@ -1,8 +1,31 @@
 import React from 'react';
 
-const Persons = ({ persons, filterWord }) => {
-  const matchedPersons = persons.filter(person => person.name.toLowerCase().includes(filterWord.toLowerCase()));
-  const rows = matchedPersons.map(person => <p key={person.name}>{person.name} {person.number}</p>);
+const Persons = ({ persons, filterWord, deletePerson, setPersons }) => {
+  const matchedPersons = persons.filter(
+    person => person.name.toLowerCase().includes(filterWord.toLowerCase())
+  );
+
+  const deleteSelected = (id) => {
+    const selectedPerson = persons.find(p => p.id === id);
+    if (!window.confirm(`Delete ${selectedPerson.name} ?`)) {
+      return;
+    }
+
+    deletePerson(id)
+      .catch(() => {
+        alert('failed to delete number ' + id + '!');
+      });
+
+    const newPersons = persons.filter(p => p.id !== id);
+    setPersons(newPersons);
+  }
+
+  const rows = matchedPersons.map(
+    person => <p key={person.name}>
+                {person.name} {person.number} 
+                <button onClick={() => {deleteSelected(person.id)}}>delete</button>
+              </p>
+  );
 
   return (rows);
 };
