@@ -12,8 +12,16 @@ const PersonForm = (props) => {
 
   const handleAddName = (event) => {
     event.preventDefault();
-    if (props.persons.find((person) => person.name === props.newName)) {
-      alert(`${props.newName} is already added to phonebook`);
+    const samePerson = props.persons.find(person => person.name === props.newName);
+    if (samePerson) {
+      const result = window.confirm(`${props.newName} is already added to phonebook, replace the old number with a new one?`);
+      if (result) {
+        PersonService.update({name: samePerson.name, number:props.newNumber, id:samePerson.id})
+          .then(returnedPerson => {
+            const newPersons = props.persons.map(person => person.name !== samePerson.name ? person : returnedPerson);
+            props.setPersons(newPersons);
+          });
+      }
       return;
     }
     PersonService.create({name: props.newName, number:props.newNumber})
