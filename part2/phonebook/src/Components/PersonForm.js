@@ -1,5 +1,6 @@
 import React from 'react';
 import PersonService from './../services/persons';
+import Notification from './Notification';
 
 const PersonForm = (props) => {
   const handleNameChange = (event) => {
@@ -20,6 +21,8 @@ const PersonForm = (props) => {
           .then(returnedPerson => {
             const newPersons = props.persons.map(person => person.name !== samePerson.name ? person : returnedPerson);
             props.setPersons(newPersons);
+            props.setMessage(`Updated ${props.newName}`)
+            setTimeout(() => {props.setMessage(null)}, 5000);
           });
       }
       return;
@@ -27,6 +30,8 @@ const PersonForm = (props) => {
     PersonService.create({name: props.newName, number:props.newNumber})
       .then(returnedPerson => {
         props.setPersons(props.persons.concat(returnedPerson));
+        props.setMessage(`Added ${returnedPerson.name}`)
+        setTimeout(() => {props.setMessage(null)}, 5000);
       });
   };
 
