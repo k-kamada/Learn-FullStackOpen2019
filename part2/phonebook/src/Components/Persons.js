@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Persons = ({ persons, filterWord, deletePerson, setPersons }) => {
+const Persons = ({ persons, filterWord, deletePerson, setPersons, setNotificationMessage, setErrorMessage }) => {
   const matchedPersons = persons.filter(
     person => person.name.toLowerCase().includes(filterWord.toLowerCase())
   );
@@ -12,8 +12,12 @@ const Persons = ({ persons, filterWord, deletePerson, setPersons }) => {
     }
 
     deletePerson(id)
-      .catch(() => {
-        alert('failed to delete number ' + id + '!');
+      .then(result => {
+        setNotificationMessage(`Deleted ${selectedPerson.name}.`);
+      })
+      .catch(error => {
+        setErrorMessage(`Imformation of ${id} has already been removed from server!`);
+        setTimeout(() => {setErrorMessage(null)},5000);
       });
 
     const newPersons = persons.filter(p => p.id !== id);

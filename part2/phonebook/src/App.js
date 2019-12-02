@@ -4,13 +4,15 @@ import PersonForm from './Components/PersonForm';
 import Persons from './Components/Persons';
 import PersonService from './services/persons'
 import Notification from './Components/Notification';
+import Error from './Components/Error';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filterWord, setFilterWord] = useState('');
-  const [message, setMessage] = useState(null);
+  const [notificationMessage, setNotificationMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     PersonService.getAll()
@@ -23,7 +25,8 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      <Notification message={message} />
+      <Notification message={notificationMessage} />
+      <Error message={errorMessage} />
 
       <Filter filterWord={filterWord} setFilterWord={setFilterWord}/>
 
@@ -36,8 +39,8 @@ const App = () => {
         setNewName={setNewName}
         newNumber={newNumber}
         setNewNumber={setNewNumber}
-        message={message}
-        setMessage={setMessage}
+        setNotificationMessage={setNotificationMessage}
+        setErrorMessage={setErrorMessage}
       />
 
       <h3>Numbers</h3>
@@ -47,6 +50,8 @@ const App = () => {
         filterWord={filterWord} 
         deletePerson={PersonService.deletePerson}
         setPersons={setPersons}
+        setNotificationMessage={setNotificationMessage}
+        setErrorMessage={setErrorMessage}
       />
 
     </div>

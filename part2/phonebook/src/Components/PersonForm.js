@@ -1,6 +1,5 @@
 import React from 'react';
 import PersonService from './../services/persons';
-import Notification from './Notification';
 
 const PersonForm = (props) => {
   const handleNameChange = (event) => {
@@ -21,17 +20,24 @@ const PersonForm = (props) => {
           .then(returnedPerson => {
             const newPersons = props.persons.map(person => person.name !== samePerson.name ? person : returnedPerson);
             props.setPersons(newPersons);
-            props.setMessage(`Updated ${props.newName}`)
-            setTimeout(() => {props.setMessage(null)}, 5000);
+            props.setNotificationMessage(`Updated ${props.newName}`)
+            setTimeout(() => {props.setNotificationMessage(null)}, 5000);
+          })
+          .catch(() => {
+            props.setErrorMessage(`Imformation of ${props.newName} has already been removed from server!`);
+            setTimeout(() => {props.setErrorMessage(null)},5000);
+            const newPersons = props.persons.filter(person => person.name !== props.newName);
+            props.setPersons(newPersons);
           });
+
       }
       return;
     }
     PersonService.create({name: props.newName, number:props.newNumber})
       .then(returnedPerson => {
         props.setPersons(props.persons.concat(returnedPerson));
-        props.setMessage(`Added ${returnedPerson.name}`)
-        setTimeout(() => {props.setMessage(null)}, 5000);
+        props.setNotificationMessage(`Added ${returnedPerson.name}`)
+        setTimeout(() => {props.setNotificationMessage(null)}, 5000);
       });
   };
 
