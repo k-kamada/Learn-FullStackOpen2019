@@ -38,6 +38,11 @@ const PersonForm = (props) => {
         props.setPersons(props.persons.concat(returnedPerson));
         props.setNotificationMessage(`Added ${returnedPerson.name}`)
         setTimeout(() => {props.setNotificationMessage(null)}, 5000);
+      })
+      .catch(error => {
+        const errorMsg = error.response.data.error;
+        props.setErrorMessage(errorMsg);
+        setTimeout(() => {props.setErrorMessage(null)},5000);
       });
   };
 
