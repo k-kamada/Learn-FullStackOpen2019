@@ -35,7 +35,7 @@ const mostBlogs = (blogs) => {
   let author = '';
   let num = 0;
 
-  for (let key in countedByAuthor) {
+  for (const key in countedByAuthor) {
     if (countedByAuthor[key] > num) {
       author = key;
       num = countedByAuthor[key];
@@ -48,9 +48,31 @@ const mostBlogs = (blogs) => {
   };
 };
 
+const mostLikes = (blogs) => {
+  const groupByAuthor = lodash.groupBy(blogs, 'author');
+
+  let mostLikedAuthor = '';
+  let mostLike = 0;
+
+  for (const author in groupByAuthor) {
+    const sumOfLikes = lodash.reduce(groupByAuthor[author], (sum, current) => sum + current.likes, 0);
+
+    if (sumOfLikes > mostLike) {
+      mostLikedAuthor = author;
+      mostLike = sumOfLikes;
+    }
+  }
+
+  return {
+    author: mostLikedAuthor,
+    likes: mostLike
+  };
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 };
